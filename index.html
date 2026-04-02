@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrediNova | Debt Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Splash Screen -->
+   <div id="splash-screen">
+    <video autoplay muted loop id="splash-video">
+        <source src="loan.mp4" type="video/mp4">
+    </video>
+    
+    <canvas id="particle-canvas"></canvas>
+    <div class="splash-content">
+
+        <h1 class="logo-large">CrediNova</h1>
+        <p class="tagline">Adaptive Loan  SCHEDULER</p>
+        <button id="init-btn">
+            <span>START YOUR JOURNEY NOW </span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+    </div>
+    <div class="splash-grid"></div>
+ </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <div class="logo-wrap">
+                    <span class="logo-mark">N</span>
+                    <h2 class="logo-small">CrediNova</h2>
+                </div>
+                <nav>
+                    <ul>
+                        <li class="nav-item active" data-tab="queue">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            Priority Queue
+                        </li>
+                        <li class="nav-item" data-tab="analytics">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            Analytics
+                        </li>
+                        <li class="nav-item" data-tab="charts">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            Visualizations
+                        </li>
+                        <li class="nav-item" data-tab="scenarios">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                            Scenarios
+                        </li>
+                        <li class="nav-item" data-tab="reports">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            Reports
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="sidebar-actions">
+                <button id="open-modal-btn" class="btn-primary" title="Keyboard: A">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add New Loan
+                </button>
+                <button id="import-btn" class="btn-secondary">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Import CSV
+                </button>
+                <div class="sim-row">
+                    <button id="time-skip-btn" class="btn-ghost" title="Keyboard: D">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+                        +1 Day
+                    </button>
+                    <button id="undo-btn" class="btn-ghost" title="Keyboard: Z" disabled>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                        Undo
+                    </button>
+                </div>
+            </div>
+
+            <div class="currency-row">
+                <span class="currency-label">Currency</span>
+                <div class="currency-btns">
+                    <button class="cur-btn active" data-symbol="$" data-code="USD">$</button>
+                    <button class="cur-btn" data-symbol="₹" data-code="INR">₹</button>
+                    <button class="cur-btn" data-symbol="€" data-code="EUR">€</button>
+                    <button class="cur-btn" data-symbol="£" data-code="GBP">£</button>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+               
+                 
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- TAB: Priority Queue -->
+            <div class="tab-pane active" id="tab-queue">
+                <header class="content-header">
+                    <div class="header-info">
+                        <h1>Priority Queue</h1>
+                        <p id="loan-count">Total Active Instruments: 0</p>
+                    </div>
+                    <div class="header-controls">
+                        <div class="payment-simulator">
+                            <label>Monthly Budget</label>
+                            <div class="input-wrap">
+                                <span class="currency-prefix">$</span>
+                                <input type="number" id="payment-input" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="summary-pills">
+                            <div class="pill"><span id="total-debt-display">$0</span><label>Total Debt</label></div>
+                            <div class="pill warning"><span id="overdue-count">0</span><label>Overdue</label></div>
+                            <div class="pill accent"><span id="monthly-interest">$0</span><label>Monthly Interest</label></div>
+                        </div>
+                    </div>
+                </header>
+
+                <div id="alert-banner" class="alert-banner hidden">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <span id="alert-text"></span>
+                </div>
+
+                <section id="loan-list" class="loan-grid">
+                    <!-- Loan Cards injected here -->
+                </section>
+            </div>
+
+            <!-- TAB: Analytics -->
+            <div class="tab-pane hidden" id="tab-analytics">
+                <header class="content-header">
+                    <div class="header-info">
+                        <h1>Analytics & Insights</h1>
+                        <p>Amortization, projections & strategy comparison</p>
+                    </div>
+                    <div>
+                        <div class="input-group-inline">
+                            <label>Monthly Budget for Projections</label>
+                            <div class="input-wrap">
+                                <span class="currency-prefix">$</span>
+                                <input type="number" id="analytics-budget" placeholder="5000">
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card full-width">
+                        <h3 class="card-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            Debt-Free Date Projector
+                        </h3>
+                        <div id="payoff-projections"></div>
+                    </div>
+
+                    <div class="analytics-card full-width">
+                        <h3 class="card-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17l-5-5-4 4-3-3"/></svg>
+                            Snowball vs Avalanche Strategy
+                        </h3>
+                        <div id="strategy-comparison"></div>
+                    </div>
+
+                    <div class="analytics-card full-width">
+                        <h3 class="card-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                            Amortization Schedule
+                        </h3>
+                        <div class="amort-controls">
+                            <select id="amort-loan-select"><option value="">Select a loan...</option></select>
+                            <button id="gen-amort-btn" class="btn-primary btn-sm">Generate</button>
+                        </div>
+                        <div id="amort-table-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Visualizations -->
+            <div class="tab-pane hidden" id="tab-charts">
+                <header class="content-header">
+                    <div class="header-info">
+                        <h1>Visualizations</h1>
+                        <p>Charts, curves & cash flow</p>
+                    </div>
+                    <div class="input-group-inline">
+                        <label>Budget for Charts</label>
+                        <div class="input-wrap">
+                            <span class="currency-prefix">$</span>
+                            <input type="number" id="chart-budget" placeholder="5000">
+                        </div>
+                    </div>
+                </header>
+                <div class="charts-grid">
+                    <div class="chart-card full-width">
+                        <h3 class="card-title">Payoff Timeline (Gantt)</h3>
+                        <div id="gantt-chart"></div>
+                    </div>
+                    <div class="chart-card full-width">
+                        <h3 class="card-title">Cumulative Debt Reduction</h3>
+                        <canvas id="debt-curve-canvas" height="220"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="card-title">Monthly Cash Flow Waterfall</h3>
+                        <canvas id="waterfall-canvas" height="260"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="card-title">Interest vs Principal Donut</h3>
+                        <div class="donut-select-row">
+                            <select id="donut-loan-select"><option value="">Select a loan...</option></select>
+                        </div>
+                        <canvas id="donut-canvas" height="260"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Scenarios -->
+            <div class="tab-pane hidden" id="tab-scenarios">
+                <header class="content-header">
+                    <div class="header-info">
+                        <h1>What-If Scenarios</h1>
+                        <p>Simulate overdue penalties, rate changes & payment impacts</p>
+                    </div>
+                </header>
+                <div class="scenarios-grid">
+                    <div class="scenario-card">
+                        <h3 class="card-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                            Overdue Penalty Simulator
+                        </h3>
+                        <div class="scenario-form">
+                            <div class="form-group">
+                                <label>Select Loan</label>
+                                <select id="overdue-loan-select"><option value="">Choose loan...</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Days Past Due</label>
+                                <input type="number" id="overdue-days" value="30" min="1">
+                            </div>
+                            <button id="calc-overdue-btn" class="btn-primary btn-sm">Calculate</button>
+                        </div>
+                        <div id="overdue-result"></div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <h3 class="card-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            Rate Change Impact
+                        </h3>
+                        <div class="scenario-form">
+                            <div class="form-group">
+                                <label>Select Loan</label>
+                                <select id="rate-loan-select"><option value="">Choose loan...</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Rate Increase (%)</label>
+                                <input type="number" id="rate-change" value="2" step="0.5" min="0.1">
+                            </div>
+                            <button id="calc-rate-btn" class="btn-primary btn-sm">Simulate</button>
+                        </div>
+                        <div id="rate-result"></div>
+                    </div>
+
+                    <div class="scenario-card full-width">
+                        <h3 class="card-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                            Payment Comparison (What-If)
+                        </h3>
+                        <p class="scenario-desc">Compare how paying different monthly amounts affects total interest paid and debt-free date.</p>
+                        <div class="payment-compare-inputs">
+                            <div class="form-group"><label>Amount A</label><div class="input-wrap"><span class="currency-prefix">$</span><input type="number" id="cmp-a" value="3000"></div></div>
+                            <div class="form-group"><label>Amount B</label><div class="input-wrap"><span class="currency-prefix">$</span><input type="number" id="cmp-b" value="6000"></div></div>
+                            <div class="form-group"><label>Amount C</label><div class="input-wrap"><span class="currency-prefix">$</span><input type="number" id="cmp-c" value="10000"></div></div>
+                            <button id="run-compare-btn" class="btn-primary btn-sm">Compare</button>
+                        </div>
+                        <div id="payment-compare-result"></div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <h3 class="card-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                            Credit Score Impact
+                        </h3>
+                        <div id="credit-tracker"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Reports -->
+            <div class="tab-pane hidden" id="tab-reports">
+                <header class="content-header">
+                    <div class="header-info">
+                        <h1>Reports & Export</h1>
+                        <p>Download repayment plans, summaries & data</p>
+                    </div>
+                </header>
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <div class="report-icon">📊</div>
+                        <h3>Monthly Summary Report</h3>
+                        <p>All loans, interest accrued, and projected next month outlook.</p>
+                        <button id="export-summary-btn" class="btn-primary">Generate PDF Report</button>
+                    </div>
+                    <div class="report-card">
+                        <div class="report-icon">📅</div>
+                        <h3>Repayment Schedule</h3>
+                        <p>Printable month-by-month amortization for all loans.</p>
+                        <div class="input-group-inline" style="margin:1rem 0">
+                            <label>Monthly Budget</label>
+                            <div class="input-wrap"><span class="currency-prefix">$</span><input type="number" id="report-budget" placeholder="5000"></div>
+                        </div>
+                        <button id="export-schedule-btn" class="btn-primary">Export Schedule</button>
+                    </div>
+                    <div class="report-card">
+                        <div class="report-icon">💾</div>
+                        <h3>Export as CSV</h3>
+                        <p>Download all loan data as a spreadsheet-compatible CSV file.</p>
+                        <button id="export-csv-btn" class="btn-primary">Download CSV</button>
+                    </div>
+                    <div class="report-card">
+                        <div class="report-icon">📤</div>
+                        <h3>Import from CSV</h3>
+                        <p>Paste comma-separated loan data to bulk-import loans instantly.</p>
+                        <textarea id="csv-import-area" placeholder="principal,rate,days,lateFee,creditFactor,notes&#10;15000,12,30,250,4,Bank of India&#10;5000,18,15,100,6,HDFC Credit"></textarea>
+                        <button id="import-csv-btn" class="btn-primary" style="margin-top:0.8rem">Import Loans</button>
+                        <p id="import-result" style="font-size:0.78rem;margin-top:0.5rem;color:var(--accent)"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add / Edit Loan Modal -->
+    <div id="modal-overlay" class="hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Register New Instrument</h3>
+                <button id="close-modal" class="close-btn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="loan-form">
+                <input type="hidden" id="edit-loan-id">
+                <div class="form-group">
+                    <label>Principal Amount</label>
+                    <div class="input-wrap"><span class="currency-prefix">$</span><input type="number" id="principal" placeholder="10000" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Interest Rate (%)</label>
+                        <input type="number" step="0.1" id="interest" placeholder="12.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Days Until Due</label>
+                        <input type="number" id="days" placeholder="30" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Late Fee</label>
+                        <div class="input-wrap"><span class="currency-prefix">$</span><input type="number" id="late-fee" placeholder="100" required></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Credit Factor (1–10)</label>
+                        <input type="number" id="credit-factor" min="1" max="10" placeholder="7" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes (bank, co-signer, etc.)</label>
+                    <input type="text" id="loan-notes" placeholder="e.g. HDFC Personal Loan, co-signer: Dad">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="close-modal-2">Cancel</button>
+                    <button type="submit" class="btn-primary" id="submit-loan-btn">Inject to Heap</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div id="shortcuts-overlay" class="hidden">
+        <div class="modal shortcuts-modal">
+            <div class="modal-header">
+                <h3>Keyboard Shortcuts</h3>
+                <button id="close-shortcuts" class="close-btn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="shortcut-list">
+                <div class="shortcut-item"><kbd>A</kbd><span>Add new loan</span></div>
+                <div class="shortcut-item"><kbd>D</kbd><span>Simulate +1 day</span></div>
+                <div class="shortcut-item"><kbd>Z</kbd><span>Undo last action</span></div>
+                <div class="shortcut-item"><kbd>1</kbd><span>Go to Priority Queue</span></div>
+                <div class="shortcut-item"><kbd>2</kbd><span>Go to Analytics</span></div>
+                <div class="shortcut-item"><kbd>3</kbd><span>Go to Visualizations</span></div>
+                <div class="shortcut-item"><kbd>4</kbd><span>Go to Scenarios</span></div>
+                <div class="shortcut-item"><kbd>5</kbd><span>Go to Reports</span></div>
+                <div class="shortcut-item"><kbd>?</kbd><span>Toggle this dialog</span></div>
+                <div class="shortcut-item"><kbd>Esc</kbd><span>Close modals</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import CSV Modal -->
+    <div id="import-modal" class="hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Import Loans from CSV</h3>
+                <button id="close-import-modal" class="close-btn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <p style="font-size:0.8rem;opacity:0.7;margin-bottom:1rem">Format: <code>principal, rate, days, lateFee, creditFactor, notes</code></p>
+            <textarea id="csv-import-modal-area" placeholder="15000,12,30,250,4,Bank of India&#10;5000,18,15,100,6,HDFC Credit Card" rows="6"></textarea>
+            <div class="modal-actions">
+                <button type="button" id="close-import-modal-2">Cancel</button>
+                <button id="do-import-btn" class="btn-primary">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
